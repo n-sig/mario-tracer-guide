@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mario Tracer - Pop-out Mission Guide (2. Bildschirm)</title>
+    <style>
+        :root {
+            --bg: #090d16;
+            --panel-bg: #111827;
+            --card-bg: #1f2937;
+            --border: #374151;
+            --accent-red: #ef4444;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-yellow: #f59e0b;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 16px;
+        }
+
+        /* Top Header */
+        .top-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(8px);
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-title img {
+            height: 48px;
+            border-radius: 8px;
+        }
+
+        .badge-live {
+            background: #10b98122;
+            color: #34d399;
+            border: 1px solid #10b98144;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Hero Artwork */
+        .hero-banner {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+
+        /* Progress Bar */
+        .progress-box {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-bg {
+            background: #1f2937;
+            border-radius: 9999px;
+            height: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #3b82f6, #10b981);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Mascot Helper Banner */
+        .mascot-banner {
+            display: flex;
+            gap: 14px;
+            background: linear-gradient(135deg, #1e293b 0%, #1e1b4b 100%);
+            border: 1px solid #f59e0b44;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+
+        .mascot-banner img {
+            width: 65px;
+            height: auto;
+            border-radius: 8px;
+            border: 2px solid #f59e0b;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: #1f2937;
+            color: #93c5fd;
+            font-weight: 600;
+        }
+
+        /* Mission Card */
+        .mission-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .mission-header {
+            padding: 12px 16px;
+            background: #1f2937;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .mission-body {
+            padding: 16px;
+        }
+
+        /* Interactive Checklist Items */
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            background: #131d2e;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .task-item:hover {
+            background: #1e293b;
+        }
+
+        .task-item input[type="checkbox"] {
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--accent-green);
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: 13.5px;
+        }
+
+        .task-item.checked {
+            background: #064e3b22;
+            border: 1px solid #10b98144;
+        }
+
+        .task-item.checked .task-text {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+
+        /* Obsidian Callout & Spoiler Details */
+        details {
+            background: #0b1120;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        details summary {
+            padding: 10px 14px;
+            background: #182234;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        details summary:hover {
+            background: #1f2d44;
+        }
+
+        details[open] summary {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .details-content {
+            padding: 12px;
+        }
+
+        /* CLI Code Box */
+        .cli-box {
+            position: relative;
+            background: #030712;
+            border: 1px solid #1f2937;
+            border-radius: 6px;
+            padding: 12px;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 12px;
+            color: #38bdf8;
+            overflow-x: auto;
+            white-space: pre;
+            margin-top: 6px;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: #1f2937;
+            border: 1px solid #374151;
+            color: #d1d5db;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .threat-container {
+            display: flex;
+            gap: 12px;
+            background: #3f111833;
+            border: 1px solid #ef444455;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .threat-container img {
+            width: 100px;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #ef4444;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="top-header">
+        <div class="header-title">
+            <img src="assets/mario_animated.gif" alt="Mario Chef & Network Specialist">
+            <div>
+                <h2 style="font-size: 16px;">Mario Tracer: Brooklyn Defense (2. Bildschirm)</h2>
+                <div style="font-size: 12px; color: var(--text-muted);">Cisco Modeling Labs 2.10 • Interaktives Ausbildungs-Cockpit</div>
+            </div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <a href="https://cml.meke347.synology.me" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px;">
+                CML öffnen ↗
+            </a>
+            <span class="badge-live">● 4-Node Lab Aktiv</span>
+            <button onclick="resetProgress()" style="background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px;">Reset</button>
+        </div>
+    </div>
+
+    <!-- Pizzeria Architecture Floorplan Banner -->
+    <div style="position: relative; margin-bottom: 16px;">
+        <img src="assets/marios_innen.png" alt="Mario's Pizzeria Brooklyn Floorplan" class="hero-banner" style="height: 240px; object-fit: cover; object-position: center;">
+        <div style="position: absolute; bottom: 8px; right: 12px; background: rgba(0,0,0,0.75); padding: 4px 10px; border-radius: 6px; font-size: 11px; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.1);">
+            📍 Mario's Pizzeria Brooklyn • Gastraum (Kasse VLAN 10) &amp; Büro (Verwaltung VLAN 20)
+        </div>
+    </div>
+
+    <!-- Live Progress Bar -->
+    <div class="progress-box">
+        <div class="progress-header">
+            <span>Aufgaben-Fortschritt</span>
+            <span id="progressText">0 / 8 erledigt (0%)</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+    </div>
+
+    <!-- Mario Assistant Helper Banner -->
+    <div class="mascot-banner">
+        <img src="assets/mario_animated.gif" alt="Mario">
+        <div>
+            <strong style="color: #fde68a; font-size: 14px;">🍕 Mario (Pizzeria-Chef &amp; Netzwerk-Architekt):</strong>
+            <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 3px;">
+                "Mamma Mia! Schützen wir unsere Brooklyn Pizzeria vor Warios Botnetz! Versuche zuerst, die Aufgaben auf Switch und Router selbst zu konfigurieren. Wenn du Hilfe brauchst, klappe einfach die Spoiler auf!"
+            </p>
+        </div>
+    </div>
+
+    <!-- IP Plan Table -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Gerät / Interface</th>
+                    <th>Subnetz / IP</th>
+                    <th>Beschreibung</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>R-Brooklyn Gi0/0</strong></td>
+                    <td><code>195.10.10.2/30</code></td>
+                    <td>WAN-Uplink zu Wario Internet</td>
+                </tr>
+                <tr>
+                    <td><strong>R-Brooklyn Gi0/1.10</strong></td>
+                    <td><code>192.168.1.1/24</code></td>
+                    <td>Gateway Kassennetz (VLAN 10)</td>
+                </tr>
+                <tr>
+                    <td><strong>R-Brooklyn Gi0/1.20</strong></td>
+                    <td><code>192.168.2.1/24</code></td>
+                    <td>Gateway Büro / Management (VLAN 20)</td>
+                </tr>
+                <tr>
+                    <td><strong>SW-Brooklyn Gi0/1</strong></td>
+                    <td>Access VLAN 10</td>
+                    <td>Port für Mario Kasse (Gastraum)</td>
+                </tr>
+                <tr>
+                    <td><strong>SW-Brooklyn Gi0/2</strong></td>
+                    <td>Access VLAN 20</td>
+                    <td>Port für Mario Büro PC</td>
+                </tr>
+                <tr>
+                    <td><strong>SW-Brooklyn Gi0/0</strong></td>
+                    <td>802.1Q Trunk</td>
+                    <td>Uplink zu R-Brooklyn Gi0/1</td>
+                </tr>
+                <tr>
+                    <td><strong>Kasse-Mario (eth0)</strong></td>
+                    <td><code>192.168.1.50/24</code></td>
+                    <td>Kassenterminal (POS)</td>
+                </tr>
+                <tr>
+                    <td><strong>R-Wario Loopback0</strong></td>
+                    <td><code>198.51.100.1/24</code></td>
+                    <td>Wario Webserver & Attack Host</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- MISSION 1 -->
+    <div class="mission-card">
+        <div class="mission-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="assets/mario_switch.png" style="width: 36px; height: 36px; border-radius: 6px; object-fit: cover; border: 1px solid #3b82f6;" alt="Mario Switching">
+                <span>🎯 Mission 1: Switch-Konfiguration &amp; VLANs (LF 3)</span>
+            </div>
+            <span style="font-size: 12px; color: #60a5fa;">Switching</span>
+        </div>
+        <div class="mission-body">
+            <label class="task-item">
+                <input type="checkbox" onchange="updateProgress()">
+                <div class="task-text">
+                    <strong>VLANs anlegen:</strong> Auf <code>SW-Brooklyn</code> VLAN 10 (<i>Kasse</i>) und VLAN 20 (<i>Buero</i>) anlegen.
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" onchange="updateProgress()">
+                <div class="task-text">
+                    <strong>Access-Ports zuweisen:</strong> <code>Gi0/1</code> in VLAN 10 und <code>Gi0/2</code> in VLAN 20 legen (`portfast`).
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" onchange="updateProgress()">
+                <div class="task-text">
+                    <strong>Trunking:</strong> Port <code>Gi0/0</code> als 802.1Q Trunk Richtung Router aktivieren.
+                </div>
+            </label>
+
+            <!-- Obsidian Collapsible Spoiler -->
+            <details>
+                <summary>🕵️‍♂️ Spoiler: Musterlösung SW-Brooklyn aufklappen</summary>
+                <div class="details-content">
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">Kopiere diese Befehle in die Konsole von <code>SW-Brooklyn</code>:</p>
+                    <div class="cli-box">
+<button class="copy-btn" onclick="copyCode(this)">Kopieren</button>enable
+configure terminal
+vlan 10
+ name Kasse
+vlan 20
+ name Buero
+interface GigabitEthernet0/1
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast
+interface GigabitEthernet0/2
+ switchport mode access
+ switchport access vlan 20
+ spanning-tree portfast
+interface GigabitEthernet0/0
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20
+end</div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- MISSION 2 -->
+    <div class="mission-card">
+        <div class="mission-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="assets/mario_plan.png" style="width: 36px; height: 36px; border-radius: 6px; object-fit: cover; border: 1px solid #10b981;" alt="Mario Network Plan">
+                <span>🌐 Mission 2: Router-on-a-Stick (LF 3)</span>
+            </div>
+            <span style="font-size: 12px; color: #34d399;">Routing</span>
+        </div>
+        <div class="mission-body">
+            <label class="task-item">
+                <input type="checkbox" onchange="updateProgress()">
+                <div class="task-text">
+                    <strong>Subinterfaces einrichten:</strong> Auf <code>R-Brooklyn</code> Subinterfaces <code>Gi0/1.10</code> und <code>Gi0/1.20</code> anlegen.
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" onchange="updateProgress()">
+                <div class="task-text">
+                    <strong>Funktionstest:</strong> Von der Kasse (<code>192.168.1.50</code>) das Standard-Gateway <code>192.168.1.1</code> anpingen.
+                </div>
+            </label>
+
+            <!-- Obsidian Collapsible Spoiler -->
+            <details>
+                <summary>🕵️‍♂️ Spoiler: Musterlösung R-Brooklyn aufklappen</summary>
+                <div class="details-content">
+                    <div class="cli-box">
+<button class="copy-btn" onclick="copyCode(this)">Kopieren</button>enable
+configure terminal
+interface GigabitEthernet0/1.10
+ encapsulation dot1Q 10
+ ip address 192.168.1.1 255.255.255.0
+interface GigabitEthernet0/1.20
+ encapsulation dot1Q 20
+ ip address 192.168.2.1 255.255.255.0
+end</div>
+                </div>
+            </details>
+
+            <details style="margin-top: 8px;">
+                <summary>💡 Prüfungstipp: Warum erst dot1Q vor IP?</summary>
+                <div class="details-content" style="font-size: 12px; color: #94a3b8;">
+                    Cisco IOS verlangt zwingend, dass auf einem Subinterface zuerst das Tagging-Verfahren (<code>encapsulation dot1Q &lt;vlan-id&gt;</code>) angegeben wird, bevor eine IP-Adresse konfiguriert werden kann.
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- MISSION 3 -->
+    <div class="mission-card">
+        <div class="mission-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="assets/mario_firewall.png" style="width: 36px; height: 36px; border-radius: 6px; object-fit: cover; border: 1px solid #ef4444;" alt="Mario Firewall Shield">
+                <span>🛡️ Mission 3: Die Anti-Wario Firewall (Security / LF 9)</span>
+            </div>
+            <span style="font-size: 12px; color: #f87171;">Extended ACL</span>
+        </div>
+        <div class="mission-body">
+            <div class="threat-container">
+                <img src="assets/wario_threat.gif" alt="Wario Threat">
+                <div>
+                    <strong style="color: #f87171;">Bedrohung: Wario Pizza Cyber-Attacken</strong>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+                        Wario greift aus <code>198.51.100.0/24</code> an. Marios Kassenterminal muss vor Spoofing und DoS geschützt werden!
+                    </div>
+                </div>
+            </div>
+
+            <label class="task-item">
+                <input type="checkbox" onchange="updateProgress()">
+                <div class="task-text">
+                    <strong>Extended ACL erstellen:</strong> <code>ANTI_WARIO</code> auf <code>R-Brooklyn</code> konfigurieren.
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" onchange="updateProgress()">
+                <div class="task-text">
+                    <strong>Inbound binden:</strong> ACL an WAN-Interface <code>Gi0/0</code> zuweisen und mit Logging testen.
+                </div>
+            </label>
+
+            <!-- Obsidian Collapsible Spoiler -->
+            <details>
+                <summary>🕵️‍♂️ Spoiler: Firewall-Befehle aufklappen</summary>
+                <div class="details-content">
+                    <div class="cli-box">
+<button class="copy-btn" onclick="copyCode(this)">Kopieren</button>enable
+configure terminal
+ip access-list extended ANTI_WARIO
+ deny ip 198.51.100.0 0.0.0.255 host 192.168.1.50 log
+ permit ip any any
+exit
+interface GigabitEthernet0/0
+ ip access-group ANTI_WARIO in
+end</div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- MISSION 4 -->
+    <div class="mission-card">
+        <div class="mission-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="assets/mario_tester.png" style="width: 36px; height: 36px; border-radius: 6px; object-fit: cover; border: 1px solid #f59e0b;" alt="Mario Packet Capture">
+                <span>🔍 Mission 4: Wireshark Live-Paketanalyse (CML Feature)</span>
+            </div>
+            <span style="font-size: 12px; color: #fbbf24;">Packet Capture</span>
+        </div>
+        <div class="mission-body">
+            <label class="task-item">
+                <input type="checkbox" onchange="updateProgress()">
+                <div class="task-text">
+                    <strong>Live Capture starten:</strong> In CML Rechtsklick auf Leitung <code>R-Brooklyn &lt;-&gt; R-Wario-Internet</code> &rarr; <i>Packet Capture</i>.
+                </div>
+            </label>
+        </div>
+    </div>
+
+    <script>
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.task-item input[type="checkbox"]');
+            const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const total = checkboxes.length;
+            const pct = Math.round((checked / total) * 100);
+
+            document.getElementById('progressBar').style.width = pct + '%';
+            document.getElementById('progressText').innerText = `${checked} / ${total} erledigt (${pct}%)`;
+
+            checkboxes.forEach((cb) => {
+                const parent = cb.closest('.task-item');
+                if (cb.checked) {
+                    parent.classList.add('checked');
+                } else {
+                    parent.classList.remove('checked');
+                }
+            });
+
+            const states = Array.from(checkboxes).map(cb => cb.checked);
+            localStorage.setItem('mario_showcase_progress', JSON.stringify(states));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('mario_showcase_progress');
+            if (saved) {
+                const states = JSON.parse(saved);
+                const checkboxes = document.querySelectorAll('.task-item input[type="checkbox"]');
+                checkboxes.forEach((cb, idx) => {
+                    if (states[idx] !== undefined) {
+                        cb.checked = states[idx];
+                    }
+                });
+                updateProgress();
+            }
+        }
+
+        function resetProgress() {
+            if (confirm('Möchtest du alle erledigten Häkchen wirklich zurücksetzen?')) {
+                localStorage.removeItem('mario_showcase_progress');
+                document.querySelectorAll('.task-item input[type="checkbox"]').forEach(cb => cb.checked = false);
+                updateProgress();
+            }
+        }
+
+        function copyCode(btn) {
+            const codeBox = btn.parentElement;
+            const clone = codeBox.cloneNode(true);
+            const btnInClone = clone.querySelector('.copy-btn');
+            if (btnInClone) btnInClone.remove();
+            const textToCopy = clone.innerText.trim();
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'Kopiert! ✓';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#1f2937';
+                }, 2000);
+            });
+        }
+
+        window.onload = loadProgress;
+    </script>
+</body>
+</html>
